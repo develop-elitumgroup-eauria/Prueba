@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="prueba_odoo_view_2" model="ir.ui.view">
+            <field name="name">prueba_odoo_view_2</field>
+            <field name="model">helpdesk.ticket</field>
+            <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button string="Crear Tarea" type="object" name="create_task" class="btn btn-primary"/>
+                </xpath>
+                <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+                    <button type="object" name="action_view_task" class="oe_stat_button" icon="fa-tasks">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_value">
+                                <field nolabel="1" name="task_count"/>
+                            </span>
+                            <span class="o_stat_text">Tarea(s)</span>
+                        </div>
+                    </button>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="create_task_view_form" model="ir.ui.view">
+            <field name="name">create_task_view_form</field>
+            <field name="model">helpdesk.task</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group col="2">
+                            <group>
+                                <field name="name"/>
+
+                                <field name="project_id" widget="Many2one"
+                                       options="{'no_create': 1, 'no_edit': 1, 'no_open': 1}"/>
+                                <field name="user_ids" options="{'no_open': True, 'no_quick_create': True}"
+                                       widget="many2many_avatar_user" domain="[('active', '=', True)]"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Descripción" name="description">
+                                <field name="description" placeholder="Description of the ticket..."/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <footer>
+                        <button string="Guardar" class="btn btn-primary" name="action_generate_and_view_task"
+                                type="object"
+                                data-hotkey="w"/>
+                        <button string="Cancelar" class="btn btn-secondary" special="cancel" data-hotkey="z"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="add_coordinator_view_form" model="ir.ui.view">
+            <field name="name">add_coordinator_view_form</field>
+            <field name="model">helpdesk.team</field>
+            <field name="inherit_id" ref="helpdesk.helpdesk_team_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@id='timesheet']" position="after">
+                    <div class="o_setting_right_pane">
+                        <group>
+                            <field name="coordinator_id"/>
+                        </group>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="task_terminated_view_form" model="ir.ui.view">
+            <field name="name">task_terminated_view_form</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_form2"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[hasclass('oe_button_box')]" position="after">
+                    <group>
+                        <field name="is_terminated" widget="boolean_toggle"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="task_terminated_stage_view_form" model="ir.ui.view">
+            <field name="name">task_terminated_stage_view_form</field>
+            <field name="model">project.task.type</field>
+            <field name="inherit_id" ref="project.task_type_edit"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='sequence']" position="after">
+                    <field name="is_terminated"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>
+

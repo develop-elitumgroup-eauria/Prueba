@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="nomina_report_view_tree" model="ir.ui.view">
+            <field name="name">nomina.report.view.tree</field>
+            <field name="model">nomina.report.prueba</field>
+            <field name="arch" type="xml">
+                <tree string="Payroll Analysis" create="0">
+                    <field name="employee_id" widget="many2one_avatar_employee"/>
+                    <field name="department_id" optional="show"/>
+                    <field name="date_from" optional="show"/>
+                    <field name="date_to" optional="show"/>
+                    <field name="net_wage" optional="show"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="nomina_report_pivot" model="ir.ui.view">
+            <field name="name">nomina_report_pivot</field>
+            <field name="model">nomina.report.prueba</field>
+            <field name="arch" type="xml">
+                <pivot string="Payroll Analysis" sample="1">
+                    <field name="department_id" type="row"/>
+                    <field name="employee_id" type="row"/>
+
+                    <field name="code" type="col"/>
+                    <field name="total_rule" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <record id="nomina_report_view_search" model="ir.ui.view">
+            <field name="name">nomina.report.search</field>
+            <field name="model">nomina.report.prueba</field>
+            <field name="arch" type="xml">
+                <search string="Payroll Analysis">
+                    <!--field name="company_id" filter_domain="[('company_id', 'ilike', self.env.company)]"/-->
+
+                    <field name="employee_id" filter_domain="[('employee_id', 'ilike', self)]"/>
+                    <field name="department_id" filter_domain="[('department_id', 'ilike', self)]"/>
+                    <field name="salary_rules_id" filter_domain="[('salary_rules_id', 'ilike', self)]"/>
+                    <field name="date_from"/>
+
+                    <!--filter name="company_id" string="Company" domain="[(self.env.company)]"/-->
+
+                    <filter string="Last 365 Days Payslip" name="year" domain="[
+                        ('date_from', '>=', (context_today() + relativedelta(days=-365)).strftime('%Y-%m-%d')),
+                        ('date_from', '&lt;', context_today().strftime('%Y-%m-%d'))]"/>
+
+                    <separator/>
+
+                    <filter name="filter_date_from" date="date_from"/>
+                    <group expand="1" string="Group By">
+                        <filter string="Employee" name="employee_id" context="{'group_by':'employee_id'}"/>
+                        <filter string="Department" name="department_id" context="{'group_by':'department_id'}"/>
+                        <filter string="Salary Rule" name="salary_rules_id" context="{'group_by':'salary_rules_id'}"/>
+                        <filter string="Company" name="company_id" context="{'group_by':'company_id'}"
+                                groups="base.group_multi_company"/>
+
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="nomina_report_action" model="ir.actions.act_window">
+            <field name="name">Nomina Report</field>
+            <field name="res_model">nomina.report.prueba</field>
+            <field name="view_mode">pivot</field>
+            <field name="search_view_id" ref="nomina_report_view_search"/>
+            <field name="context">{
+                'search_default_year': True
+                }
+            </field>
+        </record>
+
+        <menuitem id="menu_nomina_report"
+                  name="Nomina Reglas"
+                  parent="hr_payroll.menu_hr_payroll_report"
+                  action="nomina_report_action"
+                  sequence="46"/>
+    </data>
+</odoo>
+
