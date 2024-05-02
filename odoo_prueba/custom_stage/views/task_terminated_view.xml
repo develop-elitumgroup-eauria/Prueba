@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="task_terminated_view_form" model="ir.ui.view">
+            <field name="name">task_terminated_view_form</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_form2"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[hasclass('oe_button_box')]" position="after">
+                    <group>
+                        <field name="is_terminated" widget="boolean_toggle"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="task_terminated_stage_view_form" model="ir.ui.view">
+            <field name="name">task_terminated_stage_view_form</field>
+            <field name="model">project.task.type</field>
+            <field name="inherit_id" ref="project.task_type_edit"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='sequence']" position="after">
+                    <field name="is_terminated"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>
+

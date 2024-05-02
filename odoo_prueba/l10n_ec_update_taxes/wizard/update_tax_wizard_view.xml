@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="update_tax_wizard_form" model="ir.ui.view">
+            <field name="name">update_tax_wizard_form</field>
+            <field name="model">update.tax.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div style="background-color: rgb(246,246,246); padding: 10px 10px; display:block;">
+                            <p>
+                                <b>Reemplaza el impuesto antiguo por uno nuevo
+                                    <u>unicamente</u>
+                                    en configuraciones de:
+                                </b>
+                            </p>
+                            <ul>
+                                <li>
+                                    <span>Products</span>
+                                </li>
+                                <li>
+                                    <span>Fiscal Position</span>
+                                </li>
+                                <li>
+                                    <span>Company</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <br/>
+                        <group col="2">
+                            <group>
+                                <field name="tax_old_id" readonly="1"/>
+                                <field name="tax_new_id" widget="many2one_tags"
+                                       domain="[('company_id', '=', company_id)]"/>
+                                <field name="save_tax_old"/>
+                                <field name="company_id" invisible="1"/>
+                            </group>
+                        </group>
+                    </sheet>
+
+                    <footer>
+                        <button string="Confirm" class="btn btn-primary" name="save_tax"
+                                type="object"
+                                data-hotkey="w"/>
+                        <button string="Cancel" class="btn btn-secondary" special="cancel" data-hotkey="z"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>
+
+
+        <!--hr width="100%" style="background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 10px 0px;"/-->
