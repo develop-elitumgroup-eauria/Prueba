@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="account_move_picking_inherit" model="ir.ui.view">
+            <field name="name">account_move_picking_inherit</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="stock_picking_id" filter_domain="[('journal_id.code', 'ilike', 'STJ')]"/>
+                    <field name="stock_move_line_id"/>
+                    <field name="stock_move_type"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="account_move_filter_inherit" model="ir.ui.view">
+            <field name="name">account_move_filter_inherit</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_account_move_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//search/filter[@name='misc_filter']" position="after">
+                    <separator/>
+                    <filter string="Entrada" name="incoming"
+                            domain="[('stock_move_id.location_id.usage', 'not in', ('internal', 'transit')), ('stock_move_id.location_dest_id.usage', 'in', ('internal', 'transit'))]"/>
+                    <filter string="Salida" name="outgoing"
+                            domain="[('stock_move_id.location_id.usage', 'in', ('internal', 'transit')), ('stock_move_id.location_dest_id.usage', 'not in', ('internal', 'transit'))]"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>
+

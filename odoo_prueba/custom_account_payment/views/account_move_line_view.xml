@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="account_move_filter_deducible_inherit" model="ir.ui.view">
+            <field name="name">account_move_filter_deducible_inherit</field>
+            <field name="model">account.move.line</field>
+            <field name="inherit_id" ref="account.view_account_move_line_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//search/filter[@name='unreconciled']" position="after">
+                    <separator/>
+                    <filter string="Deducible" name="deducible"
+                            domain="['|',('move_id.is_deducible', '=', True), ('payment_id.is_deducible', '=', True)]"/>
+                    <filter string="No Deducible" name="undeducible"
+                            domain="['|',('move_id.is_deducible', '=', False), ('payment_id.is_deducible', '=', False)]"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>
+
